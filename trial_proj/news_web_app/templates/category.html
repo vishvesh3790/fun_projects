@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ category }} News - Global News Hub</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <a href="/">🌍 Global News Hub</a>
+            </div>
+            <div class="nav-links">
+                <a href="/">Home</a>
+                <a href="/category/politics" {% if category == 'Politics' %}class="active"{% endif %}>Politics</a>
+                <a href="/category/world" {% if category == 'World' %}class="active"{% endif %}>World</a>
+                <a href="/category/business" {% if category == 'Business' %}class="active"{% endif %}>Business</a>
+                <a href="/category/technology" {% if category == 'Technology' %}class="active"{% endif %}>Tech</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="category-header">
+        <div class="container">
+            <h1>{{ category }} News</h1>
+            <p>Latest updates from {{ category.lower() }} around the world</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="news-list">
+            <div class="news-grid">
+                {% for article in news %}
+                <div class="news-card">
+                    {% if article.urlToImage %}
+                    <div class="news-image">
+                        <img src="{{ article.urlToImage }}" alt="{{ article.title }}">
+                    </div>
+                    {% endif %}
+                    <div class="news-content">
+                        <h3>{{ article.title }}</h3>
+                        <p class="news-meta">{{ article.source.name }} • {{ article.publishedAt[:10] }}</p>
+                        <p class="news-description">{{ article.description }}</p>
+                        <a href="{{ article.url }}" target="_blank" class="read-more">Read more →</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>Last updated: {{ last_updated }}</p>
+            <p>© 2024 Global News Hub. Data refreshes automatically every 30 minutes.</p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
